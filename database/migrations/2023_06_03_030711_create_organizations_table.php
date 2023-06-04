@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->ulid('id')->unique();
+            $table->string('slug')->unique();
             $table->string('name');
             $table->string('tax_id')->nullable();
             $table->timestamps();
