@@ -42,6 +42,8 @@ class Setup extends Component
         if($organization && $address)
         {
             Auth::user()->organizations()->attach($this->organization->id);
+            Auth::user()->organization = $this->organization->id;
+            Auth::user()->save();
             return redirect(route('dashboard'));
         }
 

@@ -17,7 +17,7 @@ class HasAnOrganization
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->organizations()->count() < 1)
+        if(Auth::user()->organizations()->count() < 1 || !Auth::user()->organization)
         {
             return redirect(route('organization.setup'));
         }

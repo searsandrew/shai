@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Livewire\Campaign\Index as CampaignIndex;
+
+use App\Actions\Organization\Set as OrganizationSet;
 use App\Http\Livewire\Organization\Setup as OrganizationSetup;
+use App\Http\Livewire\Organization\Select as OrganizationSelect;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +35,13 @@ Route::middleware(['auth', 'organization'])->group(function () {
 });
 
 Route::middleware('auth')->prefix('organization')->group(function() {
+    Route::get('/set/{organization}', OrganizationSet::class)->name('organization.set');
     Route::get('/setup', OrganizationSetup::class)->name('organization.setup');
+    Route::get('/select', OrganizationSelect::class)->name('organization.select');
+});
+
+Route::middleware(['auth', 'organization'])->prefix('campaign')->group(function() {
+    Route::get('/', CampaignIndex::class)->name('campaign.index');
 });
 
 require __DIR__.'/auth.php';

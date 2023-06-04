@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('campaigns', function (Blueprint $table) {
             $table->ulid('id')->unique();
             $table->foreignUlid('organization_id')->constrained();
+            $table->string('slug')->unique();
             $table->string('name');
             $table->date('started_at');
             $table->date('ended_at');
