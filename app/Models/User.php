@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public $defaultMetaValues = [
         'organization' => false,
-     ];
+    ];
 
     public function organizations() : BelongsToMany
     {
