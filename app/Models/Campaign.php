@@ -14,6 +14,14 @@ use Kodeine\Metable\Metable;
 class Campaign extends Model
 {
     use HasUlids, HasFactory, Metable;
+    
+    public $defaultMetaValues = [
+        'toggle_image' => false,
+        'toggle_family' => false,
+        'toggle_privacy' => false,
+    ];
+
+    protected $appends = ['active'];
 
     public static function boot()
     {
@@ -23,11 +31,21 @@ class Campaign extends Model
         });
     }
 
-    public $defaultMetaValues = [
-        'toggle_image' => false,
-        'toggle_family' => false,
-        'toggle_privacy' => false,
-    ];
+    public function getRouteKeyName() : string
+    {
+        return 'slug';
+    }
+
+    public function getActiveAttribute()
+    {
+        $today = Carbon::now();
+        if($today->isAfter($this->started_at) && $today->isBefore($this->ended_at))
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     protected function startedAt() : Attribute
     {
