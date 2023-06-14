@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
-            $table->ulid('id')->unique();
-            $table->foreignUlid('campaign_id')->constrained();
-            $table->string('name')->nullable();
-            $table->string('file_path')->nullable();
-            $table->enum('status', ['new', 'processing', 'complete'])->default('new');
+        Schema::create('recipients_meta', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->foreignUlid('recipient_id')->constrained();
+            $table->string('type')->default('null');
+
+            $table->string('key')->index();
+            $table->text('value')->nullable();
+
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('recipients_meta');
     }
 };

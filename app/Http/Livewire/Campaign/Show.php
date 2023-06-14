@@ -12,6 +12,8 @@ class Show extends Component
     public bool $editImage = false, $editFamily = false, $editPrivacy = false, $toggleTransactionalContent = false, $toggleInstructionalContent = false, $togglePrivacyContent = false;
     public mixed $transactionalContent, $instructionalContent, $privacyContent;
 
+    protected $listeners = ['recipientsAdded' => 'refreshCampaign'];
+
     public function saveMeta(string $meta)
     {
         $camelCased = Str::camel($meta);
@@ -26,6 +28,11 @@ class Show extends Component
         $toggleName = 'toggle' . $camelCased;
         $this->$toggleName = $active;
         $this->$camelCased = $this->campaign->$property;
+    }
+
+    public function refreshCampaign()
+    {
+        $this->campaign->refresh();
     }
 
     public function render()

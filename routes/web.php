@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Livewire\Campaign\Index as CampaignIndex;
 use App\Http\Livewire\Campaign\Show as CampaignShow;
+use App\Actions\Recipient\Create as RecipientCreate;
+use App\Http\Livewire\Recipient\Import as RecipientImport;
 
 use App\Actions\Organization\Set as OrganizationSet;
 use App\Http\Livewire\Organization\Setup as OrganizationSetup;
@@ -44,6 +46,10 @@ Route::middleware('auth')->prefix('organization')->group(function() {
 Route::middleware(['auth', 'organization'])->prefix('campaign')->group(function() {
     Route::get('/', CampaignIndex::class)->name('campaign.index');
     Route::get('/{campaign}', CampaignShow::class)->name('campaign.show');
+    Route::prefix('{campaign}/recipient')->group(function() {
+        Route::post('/create', RecipientCreate::class)->name('recipient.create');
+        Route::get('/import/{file}', RecipientImport::class)->name('recipient.import');
+    });
 });
 
 require __DIR__.'/auth.php';

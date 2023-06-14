@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Recipient;
 
+use App\Models\Campaign;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -13,6 +14,7 @@ class Upload extends Component
 {
     use WithFileUploads;
 
+    public Campaign $campaign;
     public $file;
 
     public function save()
@@ -22,9 +24,16 @@ class Upload extends Component
         ]);
 
         $fileName = Carbon::now()->toDateString() . '-' . Str::slug($this->file->getClientOriginalName(), '-');
-        $this->file->user_id = Auth::user()->id;
-        $this->file->name = $fileName;
-        $this->file->storeAs('recipients', $fileName);
+        $this->file->storeAs('recipients', $fileName . '.' . $this->file->getClientOriginalExtension());
+
+        $this->campaign->files()->create([
+            'name' => $fileName,
+            'file_path' => $fileName . '.' . $this->file->getClientOriginalExtension()
+        ]);
+
+        $this->reset('file');
+        $this->emitUp('recipientsAdded');
+        session()->flash('livewire-toast', 'File Uploaded Sucessfully');
     }
 
     public function render()

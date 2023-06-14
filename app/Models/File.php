@@ -11,10 +11,10 @@ class File extends Model
 {
     use HasFactory, HasUlids;
 
-    protected $fillable = ['user_id', 'name', 'file_path'];
+    protected $fillable = ['user_id', 'name', 'file_path', 'status'];
 
-    public function user() : BelongsTo
+    public function campaign() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Campaign::class);
     }
 }

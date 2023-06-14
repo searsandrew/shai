@@ -1,15 +1,30 @@
 <div class="py-12">
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ $campaign->name }}
+        </h2>
+    </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row">
-            <div class="flex flex-col w-full sm:w-1/3 sm:mr-2 bg-white border px-3 pb-2 pt-1 rounded-lg content-center">
-                <h3 class="text-lg text-lighter text-slate-700">{{ __('Recipients') }}</h3>
-                <p>{{ __('Please upload a list of Recipients and their wishlists to continue.') }}</p>
+            <div class="flex flex-col w-full sm:w-1/3 sm:mr-2 bg-white border py-2 rounded-lg content-center">
+                <h3 class="text-lg text-lighter px-3 text-slate-700">{{ __('Recipients') }}</h3>
+                @forelse($campaign->files as $file)
+                    <a href="{{ route('recipient.import', [$campaign, $file]) }}" class="flex flex-row justify-between px-3 py-1 group hover:bg-rose-50 hover:text-rose-600">
+                        <span class="mr-1">{{ $file->name }}</span>
+                        <span>{{ ucwords($file->status) }}</span>
+                    </a>
+                @empty
+                    <p class="px-3">{{ __('Please upload a list of Recipients and their wishlists to continue.') }}</p>
+                @endforelse
+                <span class="px-3">
+                    @livewire('recipient.upload', ['campaign' => $campaign])
+                </span>
             </div>
-            <div class="flex flex-col w-full sm:w-1/3 sm:mx-2 bg-white border px-3 pb-2 pt-1 rounded-lg content-center">
+            <div class="flex flex-col w-full sm:w-1/3 sm:mx-2 bg-white border px-3 py-2 rounded-lg content-center">
                 <h3 class="text-lg text-lighter text-slate-700">{{ __('Donors') }}</h3>
                 <p>{{ __('Your campaign is active, however, there are no donors signed up yet.') }}</p>
             </div>
-            <div class="flex flex-col w-full sm:w-1/3 sm:ml-2 bg-white border pt-1 rounded-lg content-center">
+            <div class="flex flex-col w-full sm:w-1/3 sm:ml-2 bg-white border pt-2 rounded-lg content-center">
                 <h3 class="text-lg text-lighter text-slate-700 px-3 pt-1">{{ __('Options') }}</h3>
                 <div class="divide-y">
                     <div class="mt-3 flex flex-col sm:flex-row items-center px-2">

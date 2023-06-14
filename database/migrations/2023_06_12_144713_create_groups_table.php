@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->ulid('id')->unique();
+            $table->foreignUlid('campaign_id')->constrained();
             $table->string('name');
             $table->timestamps();
         });

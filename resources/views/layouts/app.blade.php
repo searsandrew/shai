@@ -33,6 +33,8 @@
                 {{ $slot }}
             </main>
         </div>
+        <!-- Livewire Toast -->
+        @livewire('livewire-toast')
         @livewireScripts
     </body>
 </html>
