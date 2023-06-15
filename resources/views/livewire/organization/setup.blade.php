@@ -53,14 +53,17 @@
                         <p class="text-sm italic text-slate-800">{{ __('Enter your invite code to join an organization.') }}</p>
                         <div class="mb-3">
                             <x-input-label for="invite" value="{{ __('Invitation Code') }}" />
-                            <x-text-input id="invite" type="text" />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                            <x-text-input id="invite" type="text" wire:model="invite" />
+                            <x-input-error :messages="$errors->get('invite')" class="mt-2" />
                         </div>
                         <div>
                             <x-primary-button wire:loading.attr="disabled" wire:target="join" class="">
                                 {{ __('Join Organization') }}
                             </x-primary-button>
                         </div>
+                        @if($inviteNotFound)
+                            <span class="text-red-500">{{ __('Invite code is invalid. Please be sure to copy the code exactly.') }}</span>
+                        @endif
                     </form>
                 </div>
             </div>

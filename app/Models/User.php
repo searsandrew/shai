@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Invite;
 use App\Models\Organization;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -58,5 +59,10 @@ class User extends Authenticatable
     public function selectedOrganization() : Organization
     {
         return Organization::find($this->organization);
+    }
+
+    public function invites() : HasMany
+    {
+        return $this->hasMany(Invite::class);
     }
 }

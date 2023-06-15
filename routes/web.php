@@ -16,6 +16,7 @@ use App\Http\Livewire\Recipient\Index as RecipientIndex;
 use App\Actions\Organization\Set as OrganizationSet;
 use App\Http\Livewire\Organization\Setup as OrganizationSetup;
 use App\Http\Livewire\Organization\Select as OrganizationSelect;
+use App\Http\Livewire\Organization\Manage as OrganizationManage;
 
 
 /*
@@ -47,6 +48,7 @@ Route::middleware('auth')->prefix('organization')->group(function() {
     Route::get('/set/{organization}', OrganizationSet::class)->name('organization.set');
     Route::get('/setup', OrganizationSetup::class)->name('organization.setup');
     Route::get('/select', OrganizationSelect::class)->name('organization.select');
+    Route::get('/{organization}/manage', OrganizationManage::class)->name('organization.manage');
 });
 
 Route::middleware(['auth', 'organization'])->prefix('campaign')->group(function() {

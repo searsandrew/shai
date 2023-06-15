@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Organization;
 
 use App\Models\Address;
+use App\Models\Invite;
 use App\Models\Organization;
 use Livewire\Component;
 
@@ -12,6 +13,8 @@ class Setup extends Component
 {
     public Address $address;
     public Organization $organization;
+    public string $invite;
+    public bool $inviteNotFound = false;
 
     public $rules = [
         'organization.name' => 'required',
@@ -27,6 +30,18 @@ class Setup extends Component
     {
         $this->address = new Address();
         $this->organization = new Organization();
+    }
+
+    public function checkInviteCode()
+    {
+        $invite = Invite::find($this->invite);
+        if($invite)
+        {
+
+        }
+
+        $this->invite = '';
+        $this->inviteNotFound = true;
     }
 
     public function createOrganization()
