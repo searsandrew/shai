@@ -1,7 +1,7 @@
 <div>
     <div class="py-12">
         <div class="max-w-4xl mx-auto shadow-xl">
-            <img class="sm:rounded-t-lg" src="{{ asset('storage/img/shai-banner-slim.png') }}" />
+            <img class="sm:rounded-t-lg" src="{{ asset('img/shai-banner-slim.png') }}" />
             <div class="bg-white p-6 overflow-hidden sm:rounded-b-lg">
                 <h1 class="text-lg text-slate-600">{{ __('Welcome to :Name', ['name' => config('app.name')]) }}</h1>
                 <div class="flex flex-row gap-5">
