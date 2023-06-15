@@ -49,7 +49,7 @@
                             @endforeach
                         </dl>
                     @else
-                        {!! QrCode::size(256)->generate('Hello World') !!}
+                        {!! QrCode::size(256)->generate($claimCode) !!}
                     @endif
                     <h3 class="text-lg font-light mt-6">{{ __('Donor') }}</h3>
                 @else
