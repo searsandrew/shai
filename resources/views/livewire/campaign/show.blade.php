@@ -8,6 +8,21 @@
         <div class="flex flex-col sm:flex-row">
             <div class="flex flex-col w-full sm:w-1/3 sm:mr-2 bg-white border py-2 rounded-lg content-center">
                 <h3 class="text-lg text-lighter px-3 text-slate-700">{{ __('Recipients') }}</h3>
+                <span class="flex flex-row justify-evenly mb-3">
+                    <a href="{{ route('recipient.index', $campaign) }}" class="flex flex-col bg-gray-50 border-slate-200 rounded-lg p-3 transition-all group hover:bg-rose-50 hover:text-rose-600">
+                        <h3 class="font-light text-5xl place-self-center">{{ $campaign->recipients->count() }}</h3>
+                        <small class="uppercase tracking-widest text-slate-800 place-self-center">{{ __('Recipients') }}</small>
+                    </a>
+                    <span class="flex flex-col bg-gray-50 border-slate-200 rounded-lg p-3 cursor-pointer transition-all group hover:bg-rose-50 hover:text-rose-600">
+                        <h3 class="font-light text-5xl place-self-center">{{ $campaign->recipients->count() }}</h3>
+                        <small class="uppercase tracking-widest text-slate-800 place-self-center">{{ __('Claimed') }}</small>
+                    </span>
+                    <span class="flex flex-col bg-gray-50 border-slate-200 rounded-lg p-3 cursor-pointer transition-all group hover:bg-rose-50 hover:text-rose-600">
+                        <h3 class="font-light text-5xl place-self-center">{{ $campaign->recipients->count() }}</h3>
+                        <small class="uppercase tracking-widest text-slate-800 place-self-center">{{ __('Remaining') }}</small>
+                    </span>
+                </span>
+
                 @forelse($campaign->files as $file)
                     <a href="{{ route('recipient.import', [$campaign, $file]) }}" class="flex flex-row justify-between px-3 py-1 group hover:bg-rose-50 hover:text-rose-600">
                         <span class="mr-1">{{ $file->name }}</span>

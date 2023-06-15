@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('external_id')->nullable();
             $table->string('name');
             $table->enum('privacy', ['obfuscate','standard','verbose'])->default('standard');
+            $table->datetime('held_at')->nullable();
             $table->timestamps();
         });
     }

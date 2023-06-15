@@ -5,12 +5,18 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Livewire\Campaign\Index as CampaignIndex;
 use App\Http\Livewire\Campaign\Show as CampaignShow;
+use App\Http\Livewire\Donor\Dashboard as DonorDashboard;
+use App\Http\Livewire\Donor\Register as DonorRegister;
+use App\Actions\Donor\Setup as DonorSetup;
+use App\Actions\Recipient\Claim as RecipientClaim;
 use App\Actions\Recipient\Create as RecipientCreate;
 use App\Http\Livewire\Recipient\Import as RecipientImport;
+use App\Http\Livewire\Recipient\Index as RecipientIndex;
 
 use App\Actions\Organization\Set as OrganizationSet;
 use App\Http\Livewire\Organization\Setup as OrganizationSetup;
 use App\Http\Livewire\Organization\Select as OrganizationSelect;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,9 +53,21 @@ Route::middleware(['auth', 'organization'])->prefix('campaign')->group(function(
     Route::get('/', CampaignIndex::class)->name('campaign.index');
     Route::get('/{campaign}', CampaignShow::class)->name('campaign.show');
     Route::prefix('{campaign}/recipient')->group(function() {
+        Route::get('/', RecipientIndex::class)->name('recipient.index');
         Route::post('/create', RecipientCreate::class)->name('recipient.create');
         Route::get('/import/{file}', RecipientImport::class)->name('recipient.import');
     });
+});
+
+Route::get('/donor/register', DonorRegister::class)->name('donor.register');
+Route::post('/donor/setup', DonorSetup::class)->name('donor.setup');
+Route::middleware(['donor'])->group(function() {
+    Route::get('/claim/{recipient}', RecipientClaim::class)->name('recipient.claim');
+    Route::get('/donor', DonorDashboard::class)->name('donor.dashboard');
+});
+
+Route::get('/donor/clear', function(){
+    // session()->flush();
 });
 
 require __DIR__.'/auth.php';

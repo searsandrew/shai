@@ -7,7 +7,7 @@
 
     <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
         @foreach($organization->campaigns as $campaign)
-            <a class="transition bg-white border border-slate-200 rounded-lg shadow-sm group hover:shadow-lg hover:bg-orange-50 hover:border-orange-100 cursor-pointer" href="{{ route('campaign.show', $campaign->slug) }}">
+            <a class="flex flex-col transition bg-white border border-slate-200 rounded-lg shadow-sm group hover:shadow-lg hover:bg-orange-50 hover:border-orange-100 cursor-pointer" href="{{ route('campaign.show', $campaign->slug) }}">
                 @if($campaign->active)
                     <div class="w-full shadow-inner bg-emerald-600 text-emerald-50 py-0.5 tracking-widest uppercase text-xs text-center rounded-t-lg group-hover:bg-rose-700 group-hover:text-rose-50 mb-1">
                         {{ __('Campaign Active') }}
@@ -17,9 +17,9 @@
                     'text-lg text-slate-700 group-hover:text-orange-700 leading-6 cursor-pointer px-3',
                     'pt-3' => !$campaign->active
                 ])>{{ $campaign->name }}</h3>
-                <small class="italic text-slate-500 group-hover:text-orange-500 cursor-pointer px-3">{{ $campaign->started_at->toFormattedDateString() }} - {{ $campaign->ended_at->toFormattedDateString() }}</small>
+                <small class="italic text-slate-500 group-hover:text-orange-500 cursor-pointer px-3 py-1">{{ $campaign->started_at->toFormattedDateString() }} - {{ $campaign->ended_at->toFormattedDateString() }}</small>
                 <hr/>
-                <span class="text-xs text-center px-3 pb-2">{{ __(':donations of :recipients gifts have been claimed', ['donations' => 0, 'recipients' => 0]) }}</span>
+                <span class="text-xs leading-3 text-center px-3 py-2 self-end">{{ __(':donations of :recipients gifts have been claimed', ['donations' => 0, 'recipients' => $campaign->recipients->count()]) }}</span>
             </a>
         @endforeach
         <x-secondary-button

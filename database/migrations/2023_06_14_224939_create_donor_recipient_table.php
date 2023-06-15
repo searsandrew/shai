@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('donors', function (Blueprint $table) {
-            $table->ulid('id')->unique();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->text('private_key');
-            $table->text('public_key');
+        Schema::create('donor_recipient', function (Blueprint $table) {
+            $table->foreignUlid('donor_id')->constrained();
+            $table->foreignUlid('recipient_id')->constrained();
+            $table->enum('status', ['claimed', 'notified', 'recieved'])->default('claimed');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('donors');
+        Schema::dropIfExists('donor_recipient');
     }
 };
