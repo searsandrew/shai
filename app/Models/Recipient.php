@@ -27,6 +27,6 @@ class Recipient extends Model
 
     public function donors() : BelongsToMany
     {
-        return $this->belongsToMany(Donor::class)->withPivot('status')->withTimestamps();
+        return $this->belongsToMany(Donor::class)->withPivot('id','status')->withTimestamps();
     }
 }

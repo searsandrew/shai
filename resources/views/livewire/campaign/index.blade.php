@@ -19,7 +19,7 @@
                 ])>{{ $campaign->name }}</h3>
                 <small class="italic text-slate-500 group-hover:text-orange-500 cursor-pointer px-3 py-1">{{ $campaign->started_at->toFormattedDateString() }} - {{ $campaign->ended_at->toFormattedDateString() }}</small>
                 <hr/>
-                <span class="text-xs leading-3 text-center px-3 py-2 self-end">{{ __(':donations of :recipients gifts have been claimed', ['donations' => 0, 'recipients' => $campaign->recipients->count()]) }}</span>
+                <span class="text-xs leading-3 text-center px-3 py-2 self-end">{{ __(':donations of :recipients gifts have been claimed', ['donations' => $campaign->recipients()->has('donors')->count(), 'recipients' => $campaign->recipients->count()]) }}</span>
             </a>
         @endforeach
         <x-secondary-button

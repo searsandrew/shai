@@ -49,6 +49,7 @@ class User extends Authenticatable
 
     public $defaultMetaValues = [
         'organization' => false,
+        'timezone' => 'America/Chicago',
     ];
 
     public function organizations() : BelongsToMany

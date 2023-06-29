@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,11 @@ class Donor extends Model
             $model->private_key = Crypt::encryptString($private);
             $model->public_key = Crypt::encryptString(Hash::make($private . config('app.salt')));
         });
+    }
+
+    public function communications() : HasMany
+    {
+        return $this->hasMany(Communication::class);
     }
 
     public function recipients() : BelongsToMany

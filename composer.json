@@ -15,7 +15,9 @@
         "livewire/livewire": "^2.12",
         "lorisleiva/laravel-actions": "^2.5",
         "simplesoftwareio/simple-qrcode": "~4",
-        "spatie/simple-excel": "^3.2"
+        "spatie/simple-excel": "^3.2",
+        "symfony/http-client": "^6.3",
+        "symfony/mailgun-mailer": "^6.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

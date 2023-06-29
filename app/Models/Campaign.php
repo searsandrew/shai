@@ -20,6 +20,7 @@ class Campaign extends Model
         'toggle_image' => false,
         'toggle_family' => false,
         'toggle_privacy' => false,
+        'email' => 'donotreply@shai.gift',
     ];
 
     protected $appends = ['active'];

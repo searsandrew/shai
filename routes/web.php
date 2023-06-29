@@ -64,7 +64,7 @@ Route::middleware(['auth', 'organization'])->prefix('campaign')->group(function(
 Route::get('/donor/register', DonorRegister::class)->name('donor.register');
 Route::post('/donor/setup', DonorSetup::class)->name('donor.setup');
 Route::middleware(['donor'])->group(function() {
-    Route::get('/claim/{recipient}', RecipientClaim::class)->name('recipient.claim');
+    Route::get('/claim/{type}/{ulid}', RecipientClaim::class)->name('recipient.claim');
     Route::get('/donor', DonorDashboard::class)->name('donor.dashboard');
 });
 

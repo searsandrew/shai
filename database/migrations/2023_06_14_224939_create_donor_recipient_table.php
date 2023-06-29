@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donor_recipient', function (Blueprint $table) {
+            $table->id();
             $table->foreignUlid('donor_id')->constrained();
             $table->foreignUlid('recipient_id')->constrained();
             $table->enum('status', ['claimed', 'notified', 'recieved'])->default('claimed');
