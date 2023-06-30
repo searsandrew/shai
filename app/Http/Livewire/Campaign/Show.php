@@ -25,9 +25,7 @@ class Show extends Component
     protected $listeners = ['recipientsAdded' => 'refreshCampaign'];
 
     public function mount()
-    {
-        // $this->loadData();
-    }
+    {}
 
     public function saveMeta(string $meta)
     {

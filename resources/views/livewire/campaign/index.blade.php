@@ -7,7 +7,7 @@
 
     <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
         @foreach($organization->campaigns as $campaign)
-            <a class="flex flex-col transition bg-white border border-slate-200 rounded-lg shadow-sm group hover:shadow-lg hover:bg-orange-50 hover:border-orange-100 cursor-pointer" href="{{ route('campaign.show', $campaign->slug) }}">
+            <a class="flex flex-col content-between transition bg-white border border-slate-200 rounded-lg shadow-sm group hover:shadow-lg hover:bg-orange-50 hover:border-orange-100 cursor-pointer" href="{{ route('campaign.show', $campaign->slug) }}">
                 @if($campaign->active)
                     <div class="w-full shadow-inner bg-emerald-600 text-emerald-50 py-0.5 tracking-widest uppercase text-xs text-center rounded-t-lg group-hover:bg-rose-700 group-hover:text-rose-50 mb-1">
                         {{ __('Campaign Active') }}
@@ -56,19 +56,51 @@
                         <x-input-error :messages="$errors->get('campaign.ended_at')" class="mt-2" />
                     </div>
                 </div>
-                <div class="mt-3 flex flex-col sm:flex-row items-center">
-                    <div class="input-group w-full sm:mr-1">
-                        <x-toggle-checkbox model-id="campaign.toggle_image">{{ __('Landing Page') }}</x-toggle-checkbox>
-                        <x-input-error :messages="$errors->get('campaign.toggle_image')" class="mt-2" />
-                    </div>
-                    <div class="input-group w-full sm:mx-1">
-                        <x-toggle-checkbox model-id="campaign.toggle_family">{{ __('Group by Family') }}</x-toggle-checkbox>
-                        <x-input-error :messages="$errors->get('campaign.toggle_family')" class="mt-2" />
-                    </div>
-                    <div class="input-group w-full sm:ml-1">
-                        <x-toggle-checkbox model-id="campaign.toggle_privacy">{{ __('Enchanced Privacy') }}</x-toggle-checkbox>
-                        <x-input-error :messages="$errors->get('campaign.toggle_privacy')" class="mt-2" />
-                    </div>
+                <div class="mt-3 flex flex-col sm:flex-row justify-between items-center">
+                    <span class="flex flex-row items-center">
+                        @if($toggleImage)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-orange-600 hover:text-orange-400 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('image', false)">
+                                <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm192 96a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/>
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-slate-300 hover:text-orange-500 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('image', true)">
+                                <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <path d="M384 128c70.7 0 128 57.3 128 128s-57.3 128-128 128H192c-70.7 0-128-57.3-128-128s57.3-128 128-128H384zM576 256c0-106-86-192-192-192H192C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192zM192 352a96 96 0 1 0 0-192 96 96 0 1 0 0 192z"/>
+                            </svg>
+                        @endif
+                        <small>{{ __('Landing Page') }}</small>
+                    </span>
+
+                    <span class="flex flex-row items-center">
+                        @if($toggleGroup)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-orange-600 hover:text-orange-400 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('group', false)">
+                                <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm192 96a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/>
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-slate-300 hover:text-orange-500 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('group', true)">
+                                <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <path d="M384 128c70.7 0 128 57.3 128 128s-57.3 128-128 128H192c-70.7 0-128-57.3-128-128s57.3-128 128-128H384zM576 256c0-106-86-192-192-192H192C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192zM192 352a96 96 0 1 0 0-192 96 96 0 1 0 0 192z"/>
+                            </svg>
+                        @endif
+                        <small>{{ __('Select by Group') }}</small>
+                    </span>
+
+                    <span class="flex flex-row items-center">
+                        @if($togglePrivacy)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-orange-600 hover:text-orange-400 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('privacy', true)">
+                                <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm192 96a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/>
+                            </svg>
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-slate-300 hover:text-orange-500 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('privacy', true)">
+                                <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                <path d="M384 128c70.7 0 128 57.3 128 128s-57.3 128-128 128H192c-70.7 0-128-57.3-128-128s57.3-128 128-128H384zM576 256c0-106-86-192-192-192H192C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192zM192 352a96 96 0 1 0 0-192 96 96 0 1 0 0 192z"/>
+                            </svg>
+                        @endif
+                        <small>{{ __('Enhanced Privacy') }}</small>
+                    </span>
                 </div>
 
                 <div class="mt-6 flex justify-end">

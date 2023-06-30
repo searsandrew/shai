@@ -6,6 +6,7 @@ use Closure;
 use App\Models\Recipient;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckForDonorPrivateKey
@@ -29,7 +30,7 @@ class CheckForDonorPrivateKey
 
         if(!$request->cookie('shai_public_key'))
         {
-            return redirect(route('donor.register'));
+            return redirect(route('donor.register') . '?ref=' . Crypt::encryptString(url()->current()));
         }
 
         return $next($request);

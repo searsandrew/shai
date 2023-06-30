@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignUlid('donor_id')->constrained();
             $table->foreignUlid('recipient_id')->constrained();
-            $table->enum('status', ['claimed', 'notified', 'recieved'])->default('claimed');
+            $table->enum('status', ['holding', 'claimed', 'notified', 'recieved'])->default('holding');
             $table->timestamps();
         });
     }

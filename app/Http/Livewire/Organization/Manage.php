@@ -9,6 +9,8 @@ use App\Models\Organization;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
+use Auth;
+
 class Manage extends Component
 {
     public Address $address;

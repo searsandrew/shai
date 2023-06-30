@@ -13,6 +13,8 @@ class Invite extends Model
 {
     use HasUlids, HasFactory, SoftDeletes;
 
+    protected $fillable = ['email'];
+
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);

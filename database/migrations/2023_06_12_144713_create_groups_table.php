@@ -15,6 +15,7 @@ return new class extends Migration
             $table->ulid('id')->unique();
             $table->foreignUlid('campaign_id')->constrained();
             $table->string('name');
+            $table->datetime('held_at')->nullable();
             $table->timestamps();
         });
     }

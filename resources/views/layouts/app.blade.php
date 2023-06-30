@@ -17,7 +17,9 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+            @auth
+                @include('layouts.navigation')
+            @endauth
 
             <!-- Page Heading -->
             @if (isset($header))
@@ -32,6 +34,12 @@
             <main>
                 {{ $slot }}
             </main>
+
+            @if (isset($full))
+                <div class="mt-6 px-6 py-4">
+                    {{ $full }}
+                </div>
+            @endif
         </div>
         <!-- Livewire Toast -->
         @livewire('livewire-toast')
