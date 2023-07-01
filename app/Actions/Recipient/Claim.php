@@ -16,7 +16,7 @@ class Claim
     {
         if(!$donor)
         {
-            $donor = Donor::where('shai_public_key', Cookie::get('shai_public_key'))->first();
+            $donor = Donor::where('public_key', Cookie::get('shai_public_key'))->first();
         }
 
         return $donor->recipients()->attach($recipient);
@@ -25,7 +25,7 @@ class Claim
     public function asController(ActionRequest $request)
     {
         $recipient = Recipient::find($request->only('recipient'));
-        $donor = Donor::where('shai_public_key', $request->cookie('shai_public_key'))->first();
+        $donor = Donor::where('public_key', $request->cookie('shai_public_key'))->first();
 
         $handler = $this->handle($recipient, $donor);
         return redirect(route('donor.dashboard'));
