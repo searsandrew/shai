@@ -32,14 +32,13 @@ class Claim
             ]);
         }
 
-        Cookie::queue(Cookie::forget('shai_public_key'));
-
-        return ['status' => 'success', 'message' => 'Recipients set, Email sent, and Cookie cleared'];
+        return ['status' => 'success', 'message' => 'Recipients set and Email sent.'];
     }
 
     public function asController(ActionRequest $request, Donor $donor) : RedirectResponse
     {
         $this->handle($donor);
+        Cookie::queue(Cookie::forget('shai_public_key'));
 
         return back();
     }

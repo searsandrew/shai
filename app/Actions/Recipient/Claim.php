@@ -2,9 +2,12 @@
 
 namespace App\Actions\Recipient;
 
+use App\Mail\SendDonorEmail;
 use App\Models\Donor;
+use App\Models\Group;
 use App\Models\Recipient;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -19,15 +22,27 @@ class Claim
             $donor = Donor::where('public_key', Cookie::get('shai_public_key'))->first();
         }
 
-        return $donor->recipients()->attach($recipient);
+        $donor->recipients()->attach($recipient, ['status' => 'claimed']);
+        $collection = $donor->recipients()->where('status', 'claimed')->get();
+        $mail = Mail::to($donor->email)->send(new SendDonorEmail($collection, 'selection'));
     }
 
     public function asController(ActionRequest $request)
     {
-        $recipient = Recipient::find($request->only('recipient'));
-        $donor = Donor::where('public_key', $request->cookie('shai_public_key'))->first();
+        $donor = Donor::where('public_key', Cookie::get('shai_public_key'))->first();
 
-        $handler = $this->handle($recipient, $donor);
+        if($request->type == 'group')
+        {
+            $group = Group::find($request->ulid);
+            foreach($group->recipients as $recipient)
+            {
+                $this->handle($recipient, $donor);
+            }
+        } else {
+            $recipient = Recipient::find($request->only('recipient'));
+            $this->handle($recipient, $donor);
+        }
+
         return redirect(route('donor.dashboard'));
     }
 }
