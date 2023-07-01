@@ -30,6 +30,7 @@ class Manage extends Component
     public function sendInviteCode()
     {
         $sendInvite = Auth::user()->invites()->create([
+            'organization_id' => $this->organization->id,
             'email' => $this->invite,
         ]);
 

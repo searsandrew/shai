@@ -13,7 +13,7 @@ class Invite extends Model
 {
     use HasUlids, HasFactory, SoftDeletes;
 
-    protected $fillable = ['email'];
+    protected $fillable = ['organization_id', 'email'];
 
     public function user() : BelongsTo
     {

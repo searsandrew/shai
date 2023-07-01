@@ -37,11 +37,16 @@ class Setup extends Component
         $invite = Invite::find($this->invite);
         if($invite)
         {
-
+            Auth::user()->organizations()->attach($invite->organization_id);
+            Auth::user()->setMeta('organization', $invite->organization_id);
+            Auth::user()->save();
+            $invite->delete();
         }
 
         $this->invite = '';
         $this->inviteNotFound = true;
+
+        return redirect(route('dashboard'));
     }
 
     public function createOrganization()

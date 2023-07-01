@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Campaign\Index as CampaignIndex;
 use App\Http\Livewire\Campaign\Landing as CampaignLanding;
 use App\Http\Livewire\Campaign\Show as CampaignShow;
+use App\Actions\Donor\Claim as DonorClaim;
 use App\Http\Livewire\Donor\Dashboard as DonorDashboard;
 use App\Http\Livewire\Donor\Register as DonorRegister;
 use App\Actions\Donor\Setup as DonorSetup;
@@ -66,6 +67,7 @@ Route::get('/donor/register', DonorRegister::class)->name('donor.register');
 Route::post('/donor/setup', DonorSetup::class)->name('donor.setup');
 Route::middleware(['donor'])->group(function() {
     Route::get('/campaign/{campaign}/landing', CampaignLanding::class)->name('campaign.landing');
+    Route::post('/{donor}/claim', DonorClaim::class)->name('donor.claim');
     Route::get('/claim/{type}/{ulid}', RecipientClaim::class)->name('recipient.claim');
     Route::get('/donor', DonorDashboard::class)->name('donor.dashboard');
 });

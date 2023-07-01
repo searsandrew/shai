@@ -39,6 +39,7 @@ class Landing extends Component
     public function pollingData()
     {
         $this->collection = $this->campaign->groups;
+        $this->count = $this->donor->recipients()->count();
     }
 
     public function changeFilter()
@@ -73,6 +74,7 @@ class Landing extends Component
     {
         return view('livewire.campaign.landing', [
             'collection' => $this->campaign->groups,
+            'count' => $this->donor->recipients()->count(),
         ]);
     }
 }
