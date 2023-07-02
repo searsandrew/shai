@@ -158,6 +158,40 @@
                             </div>
                         @endif
 
+                        @if($toggleUploadAttachment)
+                            <div class="group px-3 py-2 cursor-pointer bg-red-50 group hover:bg-red-100 transition-all">
+                                <h4 class="text-sm uppercase text-wider text-xs text-red-900 group-hover:text-red-800">{{ __('Email Attachment (if applicable)') }}</h4>
+                                <form wire:submit.prevent="uploadAttachment">
+                                    <div
+                                        class="flex flex-col justify-between mt-3"
+                                        x-data="{ isUploading: false, progress: 0 }"
+                                        x-on:livewire-upload-start="isUploading = true"
+                                        x-on:livewire-upload-finish="isUploading = false"
+                                        x-on:livewire-upload-error="isUploading = false"
+                                        x-on:livewire-upload-progress="progress = $event.detail.progress"
+                                    >
+                                        <!-- File Input -->
+                                        <input type="file" wire:model="attachment">
+
+                                        <!-- Progress Bar -->
+                                        <div x-show="isUploading">
+                                            <progress max="100" x-bind:value="progress"></progress>
+                                        </div>
+                                    </div>
+
+                                    @error('file') <span class="error">{{ $message }}</span> @enderror
+
+                                    <x-primary-button type="submit" class="mt-3">{{ __('Upload Attachment') }}</x-primary-button>
+                                    <x-secondary-button wire:click="$toggle('toggleUploadAttachment')">{{ __('Cancel') }}</x-secondary-button>
+                                </form>
+                            </div>
+                        @else
+                            <div class="group px-3 py-2 cursor-pointer group hover:bg-red-50 rounded-b-lg transition-all" wire:click="$toggle('toggleUploadAttachment')">
+                                <h4 class="text-sm uppercase text-wider text-xs text-slate-900 group-hover:text-red-900">{{ __('Email Attachment (if applicable)') }}</h4>
+                                <p class="text-sm group-hover:text-red-700 truncate">{{ $activeAttachment }}</p>
+                            </div>
+                        @endif
+
                         @if($campaign->toggle_image)
                             <a href="{{ route('campaign.landing', $campaign) }}" target="_new" class="w-full flex flex-row px-3">
                                 <strong>Landing Page:</strong> {{ route('campaign.landing', $campaign) }}

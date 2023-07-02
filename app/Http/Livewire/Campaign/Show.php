@@ -4,28 +4,40 @@ namespace App\Http\Livewire\Campaign;
 
 use App\Models\Campaign;
 use App\Models\Donor;
+use App\Models\File;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Show extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public Campaign $campaign;
     // public LengthAwarePaginator $donors;
-    public bool $editImage = false, $editFamily = false, $editPrivacy = false, $toggleSelectionContent = false, $toggleReminderContent = false, $toggleCompletionContent = false;
+    public bool $editImage = false, $editFamily = false, $editPrivacy = false, $toggleSelectionContent = false, $toggleReminderContent = false, $toggleCompletionContent = false, $toggleUploadAttachment = false;
     public bool $toggleImage = false;
     public int $recipientCount = 0, $donorCount = 0;
     public mixed $selectionContent, $reminderContent, $completionContent;
+    public $attachment, $activeAttachment;
 
     protected $listeners = ['recipientsAdded' => 'refreshCampaign'];
 
     public function mount()
-    {}
+    {
+        $activeAttachment = DB::table('files')->where([
+            'campaign_id' => $this->campaign->id,
+            'type' => 'attachment',
+        ])->first();
+
+        // dd($activeAttachment->name);
+    }
 
     public function saveMeta(string $meta)
     {
@@ -60,6 +72,25 @@ class Show extends Component
     public function refreshCampaign()
     {
         $this->campaign->refresh();
+    }
+
+    public function uploadAttachment()
+    {
+        $this->validate([
+            'attachment' => 'required|mimes:csv,txt,xlx,xls,pdf|max:2048',
+        ]);
+        
+        $attachmentName = Carbon::now()->toDateString() . '-' . Str::slug($this->attachment->getClientOriginalName(), '-');
+        $this->attachment->storeAs('attachments', $attachmentName . '.' . $this->attachment->getClientOriginalExtension());
+        
+        $this->campaign->files()->create([
+            'name' => $attachmentName,
+            'type' => 'attachment',
+            'file_path' => $attachmentName . '.' . $this->attachment->getClientOriginalExtension()
+        ]);
+        
+        $this->reset('attachment');
+        session()->flash('livewire-toast', 'Attachment Uploaded Sucessfully');
     }
 
     public function render()

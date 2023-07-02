@@ -6,11 +6,14 @@ use App\Models\Campaign;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class SendDonorEmail extends Mailable
 {
@@ -51,5 +54,17 @@ class SendDonorEmail extends Mailable
                 'recipients' => $this->collection,
             ],
         );
+    }
+
+    public function attachments(): array
+    {
+        $activeAttachment = DB::table('files')->where([
+            'campaign_id' => $this->campaign->id,
+            'type' => 'attachment',
+        ])->first();
+
+        return [
+            Attachment::fromPath(Storage::path('attachments/' . $activeAttachment->file_path)),
+        ];
     }
 }
