@@ -37,7 +37,10 @@ class Claim
 
     public function asController(ActionRequest $request, Donor $donor) : RedirectResponse
     {
-        $this->handle($donor);
+        if($donor->recipients()->where('status', 'holding')->count() != 0)
+        {
+            $this->handle($donor);
+        }
         Cookie::queue(Cookie::forget('shai_public_key'));
 
         return back();

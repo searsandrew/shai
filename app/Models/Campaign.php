@@ -18,7 +18,7 @@ class Campaign extends Model
     
     public $defaultMetaValues = [
         'toggle_image' => false,
-        'toggle_family' => false,
+        'toggle_group' => false,
         'toggle_privacy' => false,
         'email' => 'donotreply@shai.gift',
     ];
@@ -83,5 +83,10 @@ class Campaign extends Model
     public function recipients() : HasMany
     {
         return $this->hasMany(Recipient::class);
+    }
+
+    public function available() : HasMany
+    {
+        return $this->hasMany(Recipient::class)->whereNull('held_at');
     }
 }

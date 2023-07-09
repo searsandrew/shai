@@ -22,7 +22,7 @@ class Show extends Component
     public Campaign $campaign;
     // public LengthAwarePaginator $donors;
     public bool $editImage = false, $editFamily = false, $editPrivacy = false, $toggleSelectionContent = false, $toggleReminderContent = false, $toggleCompletionContent = false, $toggleUploadAttachment = false;
-    public bool $toggleImage = false;
+    public bool $toggleImage = false, $toggleGroup = false, $togglePrivacy = false;
     public int $recipientCount = 0, $donorCount = 0;
     public mixed $selectionContent, $reminderContent, $completionContent;
     public $attachment, $activeAttachment;
@@ -35,6 +35,10 @@ class Show extends Component
             'campaign_id' => $this->campaign->id,
             'type' => 'attachment',
         ])->first();
+
+        $this->toggleImage = $this->campaign->toggle_image;
+        $this->toggleGroup = $this->campaign->toggle_group;
+        $this->togglePrivacy = $this->campaign->toggle_privacy;
 
         // dd($activeAttachment->name);
     }
@@ -58,9 +62,9 @@ class Show extends Component
     public function toggle(string $action, bool $true = false)
     {
         $camelCased = Str::camel('toggle-' . $action);
-        $this->campaign->setMeta('toggle_' . $action, $this->$camelCased);
-        $this->campaign->saveMeta();
-        $this->$camelCased = true;
+        $this->$camelCased = $true;
+        $this->campaign->setMeta(Str::snake($camelCased), $true);
+        $this->campaign->save();
     }
 
     public function loadData()

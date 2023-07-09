@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Campaign;
 use App\Models\Campaign;
 use App\Models\Donor;
 use App\Models\Group;
+use App\Models\Recipient;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cookie;
@@ -31,15 +32,20 @@ class Landing extends Component
         {
             $this->collection = $this->campaign->groups;
         } else {
-            $this->meta = [];
-            $this->changeFilter();
+            $this->collection = $this->campaign->available;
         }
     }
 
     public function pollingData()
     {
-        $this->collection = $this->campaign->groups;
-        $this->count = $this->donor->recipients()->count();
+        if($this->toggleGroups)
+        {
+            $this->collection = $this->campaign->groups;
+            $this->count = $this->donor->recipients()->count();
+        } else {
+            $this->collection = $this->campaign->available;
+            $this->count = $this->donor->recipients()->count();
+        }
     }
 
     public function changeFilter()
@@ -65,15 +71,22 @@ class Landing extends Component
             }
 
             $this->collection = $this->campaign->groups;
+            $this->count = $this->donor->recipients()->count();
         } else {
-            dd('Fail');
+            $recipient = Recipient::find($ulid);
+            $recipient->update([
+                'held_at' => Carbon::now()
+            ]);
+
+            $recipient->donors()->attach($this->donor->id);
+            $this->collection = $this->campaign->available;
+            $this->count = $this->donor->recipients()->count();
         }
     }
 
     public function render()
     {
         return view('livewire.campaign.landing', [
-            'collection' => $this->campaign->groups,
             'count' => $this->donor->recipients()->count(),
         ]);
     }

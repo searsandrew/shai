@@ -57,7 +57,7 @@
                         <div class="mt-3 flex flex-col sm:flex-row items-center px-2">
                             <div class="input-group w-full sm:mr-1">
                                 <span class="flex flex-row items-center">
-                                    @if($campaign->toggle_image)
+                                    @if($toggleImage)
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-orange-600 hover:text-orange-400 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('image', false)">
                                             <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                             <path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm192 96a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/>
@@ -73,7 +73,7 @@
                             </div>
                             <div class="input-group w-full sm:mr-1">
                                 <span class="flex flex-row items-center">
-                                    @if($campaign->toggle_group)
+                                    @if($toggleGroup)
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-orange-600 hover:text-orange-400 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('group', false)">
                                             <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                             <path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm192 96a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/>
@@ -89,7 +89,7 @@
                             </div>
                             <div class="input-group w-full sm:mr-1">
                                 <span class="flex flex-row items-center">
-                                    @if($campaign->toggle_privacy)
+                                    @if($togglePrivacy)
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1 text-orange-600 hover:text-orange-400 transition-all cursor-pointer" fill="currentColor" viewBox="0 0 576 512" wire:click="toggle('privacy', false)">
                                             <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                             <path d="M192 64C86 64 0 150 0 256S86 448 192 448H384c106 0 192-86 192-192s-86-192-192-192H192zm192 96a96 96 0 1 1 0 192 96 96 0 1 1 0-192z"/>

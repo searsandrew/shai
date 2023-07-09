@@ -8,6 +8,8 @@
                 @if($count > 0)
                     <span class="content-center mr-3">{{ __(':count Recipients Selected', ['count' => $count]) }}</span>
                     <x-primary-button type="submit">{{ __('Claim and Logout') }}</x-primary-button>
+                @else
+                    <x-primary-button type="submit">{{ __('Logout') }}</x-primary-button>
                 @endif
             </form>
         </h2>
@@ -36,10 +38,24 @@
                                         @endforeach
                                     </div>
                                 </div>
+                            @else
+                                <div class="flex flex-col w-full">
+                                    <h3 class="text-lg font-light">{{ $item->name }}</h3>
+                                    <div class="divide-y mt-1">
+                                        @foreach($item->getMeta() as $key => $value)
+                                            <div class="mr-3 text-sm">
+                                                <span class="font-bold">{{ Str::headline($key) }}</span>: {{ Str::headline($value) }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                             @endif
 
-                            <span class="flex flex-col mx-auto my-3">
-                                {!! QrCode::size(100)->generate(route('recipient.claim', ['group', $item->id])) !!}
+                            <span class="flex flex-col w-28 mx-auto my-3">
+                                {!! QrCode::size(100)->generate(route('recipient.claim', [
+                                    ($toggleGroups ? 'group' : 'recipient'),
+                                    $item->id
+                                ])) !!}
                                 <x-secondary-button type="button" wire:click="addRecipientToCard('{{ $item->id }}')" class="justify-center mt-3">{{ __('Claim') }}</x-secondary-button>
                             </span>
                         </div>
