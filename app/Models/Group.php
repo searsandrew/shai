@@ -19,9 +19,9 @@ class Group extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope('notHeld', function (Builder $builder) {
-            $builder->where('held_at', NULL);
-        });
+        // static::addGlobalScope('notHeld', function (Builder $builder) {
+        //     $builder->where('held_at', NULL);
+        // });
     }
 
     public function campaign() : BelongsTo

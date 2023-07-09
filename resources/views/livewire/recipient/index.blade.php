@@ -79,14 +79,14 @@
                             @endforeach
                         </div>
                     @endif
-                    @if($group->donors()->count() > 0)
+                    @if($recipient->donors()->count() > 0)
                         <div class="flex flex-row justify-between border-t-4 border-slate-100 items-center">
                             <span class="flex flex-col">
                                 <h3 class="flex flex-row justify-between text-lg font-light mt-1 pt-2">
                                     {{ __('Donor') }}
                                 </h3>
-                                <span class="">{{ $group->donors()->first()->name }}</span>
-                                <a class="text-sm text-slate-500" href="mailto:{{ $group->donors()->first()->email }}">{{ $group->donors()->first()->email }}</a>
+                                <span class="">{{ $recipient->donors()->first()->name }}</span>
+                                <a class="text-sm text-slate-500" href="mailto:{{ $recipient->donors()->first()->email }}">{{ $recipient->donors()->first()->email }}</a>
                             </span>
                             <span class="flex flex-row">
                                 <span class="flex flex-col place-items-center p-2 mr-2 rounded-lg cursor-pointer border-slate-100 text-slate-300 border group hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-none transform-all">
@@ -115,7 +115,7 @@
                                 <h3 class="flex flex-row justify-between text-lg font-light pt-3">
                                     {{ __('Communication') }}
                                 </h3>
-                                @forelse(\App\Models\Communication::where('donor_recipient_id', $group->donors()->first()->pivot->id)->get() as $communication)
+                                @forelse(\App\Models\Communication::where('donor_recipient_id', $recipient->donors()->first()->pivot->id)->get() as $communication)
                                     <div class="flex flex-row py-2 border-b border-slate-200 last:border-b-0 justify-between">
                                         <span class="text-xs py-0.5 px-1 uppercase bg-slate-100 text-slate-600 rounded">
                                             {{ $communication->type}}

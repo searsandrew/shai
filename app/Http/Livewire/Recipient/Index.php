@@ -63,7 +63,7 @@ class Index extends Component
 
     public function manuallySendEmail()
     {
-        $this->sendEmailToDonor($this->emailType, $this->group->donors->first(), $this->group->recipients, false);
+        $this->sendEmailToDonor($this->emailType, $this->recipient->donors->first(), false, false);
         $this->reset('emailType');
         $this->emit('manualEmailSent');
     }
