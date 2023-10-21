@@ -12,21 +12,25 @@ class Setup
 {
     use AsAction;
 
-    public function handle($request)
+    public function handle(string $name, string $email): Donor
     {
-        $donor = Donor::create($request->only('name', 'email'));
-        if(!is_null($request->recipient))
-        {
-            $donor->recipients()->attach($request->only('recipient'));
-        }
-        Cookie::queue('shai_public_key', $donor->public_key, 43200);
+        return Donor::firstOrCreate(
+            [ 'email' => $email ],
+            [ 'name' => $name ]
+        );
     }
 
     public function asController(ActionRequest $request)
     {
         $request->validated();
-        
-        $handler = $this->handle($request);
+        $donor = $this->handle($request->name, $request->email);
+
+        if(!is_null($request->recipient))
+        {
+            $donor->recipients()->attach($request->only('recipient'));
+        }
+
+        Cookie::queue('shai_public_key', $donor->public_key, 43200);
 
         if(!is_null($request->ref))
         {
@@ -39,7 +43,7 @@ class Setup
     {
         return [
             'name' => ['required'],
-            'email' => ['required', 'email:rfc,dns', 'unique:donors,email', ],
+            'email' => ['required', 'email:rfc,dns'],
         ];
     }
 }
