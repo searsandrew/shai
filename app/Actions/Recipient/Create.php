@@ -20,7 +20,6 @@ class Create
 
     public function handle($assignments)
     {
-        // dd($assignments);
         $this->rows->getRows()->each(function(array $rowProperties) use ($assignments) {
             $recipient = [];
             

@@ -56,15 +56,14 @@ class SendDonorEmail extends Mailable
         );
     }
 
-    public function attachments(): array
+    public function attachments()
     {
-        $activeAttachment = DB::table('files')->where([
-            'campaign_id' => $this->campaign->id,
-            'type' => 'attachment',
-        ])->first();
-
-        return [
-            Attachment::fromPath(Storage::path('attachments/' . $activeAttachment->file_path)),
-        ];
+        $files = $this->campaign->files()->where('type', 'attachment');
+        if($files->exists())
+        {    
+            return [
+                Attachment::fromPath(Storage::path('attachments/' . $files->first()->file_path)),
+            ];
+        }        
     }
 }

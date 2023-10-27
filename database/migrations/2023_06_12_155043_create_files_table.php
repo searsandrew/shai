@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUlid('campaign_id')->constrained();
             $table->string('name')->nullable();
             $table->string('file_path')->nullable();
+            $table->enum('type', ['attachment', 'upload'])->default('upload');
             $table->enum('status', ['new', 'processing', 'complete'])->default('new');
             $table->timestamps();
         });

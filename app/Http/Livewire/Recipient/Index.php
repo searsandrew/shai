@@ -31,6 +31,7 @@ class Index extends Component
     {
         $this->toggleGroups = $this->campaign->toggle_group ?: false;
         $this->recipient = new Recipient();
+        $this->group = new Group();
     }
 
     public function activateItem(string $ulid)
@@ -46,7 +47,7 @@ class Index extends Component
             $this->recipient = Recipient::find($ulid);
             $this->meta = $this->recipient->getMeta()->toArray();
             $this->keys = array_keys($this->meta);
-    
+
             foreach($this->keys as $key)
             {
                 $this->rules['recipient.' . $key] = 'required';
@@ -68,7 +69,12 @@ class Index extends Component
         $this->emit('manualEmailSent');
     }
 
-    public function manuallyAddRecipient(string $recipient)
+    public function manuallyRemoveDonor()
+    {
+       $this->recipient->donors()->detach();
+    }
+
+    public function manuallyAddRecipient()
     {
         $this->validate([
             'name' => 'required',
@@ -83,17 +89,15 @@ class Index extends Component
                 'email' => $this->email,
             ]);
         }
-        
+
         if($this->toggleGroups)
         {
-            $group = Group::find($recipient);
-            foreach($group->recipients as $recipient)
+            foreach($this->group->recipients as $recipient)
             {
                 RecipientClaim::run($recipient, $donor);
             }
         } else {
-            $recipient = Recipient::find($recipient);
-            RecipientClaim::run($recipient, $donor);
+            RecipientClaim::run($this->recipient, $donor);
         }
 
         $this->sendEmailToDonor('selection', $donor);
@@ -116,7 +120,7 @@ class Index extends Component
                 $status = 'notified';
                 $newStatus = 'recieved';
                 break;
-            
+
             default:
                 $status = 'claimed';
                 $newStatus = 'notified';

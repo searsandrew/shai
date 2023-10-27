@@ -25,6 +25,13 @@ class Claim
         $donor->recipients()->attach($recipient, ['status' => 'claimed']);
         $collection = $donor->recipients()->where('status', 'claimed')->get();
         $mail = Mail::to($donor->email)->send(new SendDonorEmail($collection, 'selection'));
+        foreach($collection as $notify)
+        {
+            $notify->communications()->create([
+                'type' => 'selection',
+                'payload' => json_encode($mail)
+            ]);
+        }
     }
 
     public function asController(ActionRequest $request)

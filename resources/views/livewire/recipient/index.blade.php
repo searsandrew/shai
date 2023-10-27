@@ -5,6 +5,7 @@
         </h2>
     </x-slot>
 
+    Group: {{ $group->id }}
     <div class="flex flex-col-reverse sm:flex-row max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="w-full sm:w-2/3">
             <table class="table border-collapse table-fixed w-full text-sm mb-3">
@@ -24,7 +25,18 @@
                 </thead>
                 <tbody class="bg-white dark:bg-slate-800">
                     @foreach($list as $item)
-                        <tr class="group cursor-pointer" wire:click="activateItem('{{ $item->id}}')">
+                        @php
+                            if($toggleGroups)
+                            {
+                                $itemActive = $item->id == $group->id;
+                            } else {
+                                $itemActive = $item->id == $recipient->id;
+                            }
+                        @endphp
+                        <tr @class([
+                            'group cursor-pointer',
+                            'bg-red' => $itemActive,
+                        ]) wire:click="activateItem('{{ $item->id}}')">
                             <td class="border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->external_id }}</td>
                             @if($toggleGroups)
                                 <td wire:click="activateItem($item->id)" class="border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->name }}</td>
@@ -33,8 +45,8 @@
                                 <td wire:click="activateItem($item->id)" class="border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->name }}</td>
                                 <td class="border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->group->name }}</td>
                             @endif
-                            <td class="border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->donors->first()->name ?? '' }}</td>
-                            <td class="capitalize text-center border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->donors->first()->pivot->status ?? '' }}</td>
+                            <td class="border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->donors->first()->name ?? 'None' }}</td>
+                            <td class="capitalize text-center border-b border-slate-100 dark:border-slate-700 p-3 pl-1 text-slate-500 dark:text-slate-400 group-hover:bg-rose-50 group-hover:text-rose-600 transition-all">{{ $item->donors->first()->pivot->status ?? 'Unselected' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -64,7 +76,7 @@
                     @endif
                     @if($toggleGroups)
                         <small class="text-xs text-slate-400 uppercase tracking-widest">{{ __('Group Name') }}</small>
-                        <h3 class="text-lg font-light">{{ $this->group->name }}</h3>
+                        <h3 class="text-lg font-light">{{ $group->name }}</h3>
                         <small class="text-xs text-slate-400 uppercase tracking-widest mt-3">{{ __('Recipients in Group') }}</small>
                         <div class="divide-y mt-1">
                             @foreach($this->group->recipients as $recipient)
@@ -89,13 +101,16 @@
                                 <a class="text-sm text-slate-500" href="mailto:{{ $recipient->donors()->first()->email }}">{{ $recipient->donors()->first()->email }}</a>
                             </span>
                             <span class="flex flex-row">
-                                <span class="flex flex-col place-items-center p-2 mr-2 rounded-lg cursor-pointer border-slate-100 text-slate-300 border group hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-none transform-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 448 512">
+                                <x-secondary-button
+                                    class="flex flex-col place-items-center py-2 px-1 mr-2 rounded-lg normal-case tracking-normal font-normal cursor-pointer border-slate-100 text-slate-300 border group hover:text-red-600 hover:border-red-300 hover:bg-red-50 hover:shadow-none transform-all"
+                                    x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'remove-donor-from-recipient')" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 512 512">
                                         <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                         <path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0H284.2c12.1 0 23.2 6.8 28.6 17.7L320 32h96c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64S14.3 32 32 32h96l7.2-14.3zM32 128H416V448c0 35.3-28.7 64-64 64H96c-35.3 0-64-28.7-64-64V128zm96 64c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16V432c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16z"/>
                                     </svg>
                                     <span class="text-xs text-slate-500 group-hover:text-red-800">{{ __('Remove') }}</span>
-                                </span>
+                                </x-secondary-button>
                                 <x-secondary-button
                                     class="flex flex-col place-items-center p-2 rounded-lg normal-case tracking-normal font-normal cursor-pointer border-slate-100 text-slate-300 border group hover:text-emerald-600 hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-none transform-all"
                                     x-data=""
@@ -136,11 +151,11 @@
                                 {{ __('Donor') }}
                             </h3>
                             <em class="text-slate-700 mb-3">{{ __('Recipient Unclaimed') }}</em>
-                            <form wire:submit.prevent="manuallyAddRecipient('{{ $group->id }}')">
+                            <form wire:submit.prevent="manuallyAddRecipient('{{ $group->id ?? false }}')">
                                 <div class="input-group flex flex-col mt-3 content-evenly">
                                     <x-input-label for="name" :value="__('Name')" />
                                     <x-text-input id="name" class="block mt-1 w-full" type="text" wire:model="name" :value="old('name')" required autocomplete="name" />
-                                    <x-input-error :messages="$errors->get('name')" class="mt-2" />    
+                                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                                 </div>
 
                                 <div class="input-group flex flex-col mt-3 content-evenly">
@@ -148,7 +163,7 @@
                                     <x-text-input id="email" class="block mt-1 w-full" type="email" wire:model="email" :value="old('email')" required autocomplete="email" />
                                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                 </div>
-                                
+
                                 <x-primary-button type="submit" wire:loading.attr="disabled" class="mt-3">{{ __('Manually Add Donor') }}</x-primary-button>
                             </form>
                         </div>
@@ -161,6 +176,25 @@
         </div>
     </div>
 
+    <x-modal name="remove-donor-from-recipient" :show="$modal" maxWidth="sm" focusable>
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                {{ __('Remove Donor') }}
+            </h2>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {{ __('Removing this donor from the recipient is permanent, please ensure you have the correct donor and recipient.') }}
+            </p>
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button class="ml-3" wire:click="manuallyRemoveDonor()" x-on:click="$dispatch('close')">
+                    {{ __('Confirm Delete') }}
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
     <x-modal name="manually-send-email" :show="$modal" maxWidth="sm" focusable>
         <div class="p-6">
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -184,7 +218,7 @@
                 <x-secondary-button x-on:click="$dispatch('close')">
                     {{ __('Cancel') }}
                 </x-secondary-button>
-    
+
                 <x-primary-button class="ml-3" wire:click="manuallySendEmail()" x-on:click="$dispatch('close')">
                     {{ __('Send Email') }}
                 </x-primary-button>

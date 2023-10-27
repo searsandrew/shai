@@ -15,6 +15,7 @@ class Group extends Model
 {
     use HasFactory, HasUlids;
 
+    protected $appends = ['external_id'];
     protected $fillable = ['name', 'held_at'];
 
     protected static function booted()
@@ -22,6 +23,17 @@ class Group extends Model
         // static::addGlobalScope('notHeld', function (Builder $builder) {
         //     $builder->where('held_at', NULL);
         // });
+    }
+
+    public function getExternalIdAttribute() // : int|bool
+    {
+        $recipients = $this->recipients()->get();
+        if($recipients->count() > 0)
+        {
+            return $recipients->first()->external_id;
+        }
+
+        return false;
     }
 
     public function campaign() : BelongsTo

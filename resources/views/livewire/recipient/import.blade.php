@@ -19,7 +19,7 @@
                         @foreach($csv->getHeaders() as $key => $header)
                             <th class="border-b dark:border-slate-600 pt-2 pb-1 font-medium text-slate-400 dark:text-slate-200 text-left">
                                 {{ ucwords(strtolower($header)) }}
-                                <select name="{{ Str::snake($header) }}" class="flex w-full shrink text-xs border-slate-300 rounded-lg px-2 py-1">
+                                <select name="{{ Str::snake(strtolower($header)) }}" class="flex w-full shrink text-xs border-slate-300 rounded-lg px-2 py-1">
                                     <option value="skip">{{ __('Omit') }}</option>
                                     <option value="name">{{ __('Name') }}</option>
                                     <option value="group_id">{{ __('Grouping') }}</option>
