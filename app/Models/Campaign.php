@@ -89,4 +89,9 @@ class Campaign extends Model
     {
         return $this->hasMany(Recipient::class)->whereNull('held_at');
     }
+
+    public function availableGroups() : HasMany
+    {
+        return $this->hasMany(Group::class)->whereNull('held_at');
+    }
 }

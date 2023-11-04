@@ -12,6 +12,7 @@ use App\Http\Livewire\Donor\Register as DonorRegister;
 use App\Actions\Donor\Setup as DonorSetup;
 use App\Actions\Recipient\Claim as RecipientClaim;
 use App\Actions\Recipient\Create as RecipientCreate;
+use App\Actions\Recipient\Hold as RecipientHold;
 use App\Http\Livewire\Recipient\Import as RecipientImport;
 use App\Http\Livewire\Recipient\Index as RecipientIndex;
 
@@ -69,6 +70,7 @@ Route::middleware(['donor'])->group(function() {
     Route::get('/campaign/{campaign}/landing', CampaignLanding::class)->name('campaign.landing');
     Route::post('/{donor}/claim', DonorClaim::class)->name('donor.claim');
     Route::get('/claim/{type}/{ulid}', RecipientClaim::class)->name('recipient.claim');
+    Route::post('/campaign/{campaign}/hold/{ulid}', RecipientHold::class)->name('recipient.hold');
     Route::get('/donor', DonorDashboard::class)->name('donor.dashboard');
 });
 

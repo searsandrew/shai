@@ -1,4 +1,4 @@
-<div wire:poll="pollingData">
+<div>
     <x-slot name="header">
         <small class="w-full">{{ __('Logged in as :name', ['name' => $donor->name]) }}</small>
         <h2 class="flex flex-row justify-between">
@@ -19,9 +19,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="columns-3 gap-3">
                 @foreach($collection as $item)
-                    <div class="mb-3">
+                    <div class="mb-3" wire:key="card-{{ $item->id }}">
                         <div class="flex flex-row bg-white border border-slate-200 rounded-lg px-3 py-1">
-                            @if($toggleGroups)
+                            @if($campaign->toggle_group)
                                 <div class="flex flex-col">
                                     <h3 class="text-lg font-light">{{ $item->name }}</h3>
                                     <small class="text-xs text-slate-400 uppercase tracking-widest mt-3">{{ __('Recipients in Group') }}</small>
@@ -51,13 +51,14 @@
                                 </div>
                             @endif
 
-                            <span class="flex flex-col w-28 mx-auto my-3">
+                            <form class="flex flex-col w-28 mx-auto my-3" method="POST" action="{{ route('recipient.hold', ['campaign' => $campaign, 'ulid' => $item->id]) }}">
+                                @csrf
                                 {!! QrCode::size(100)->generate(route('recipient.claim', [
-                                    ($toggleGroups ? 'group' : 'recipient'),
+                                    ($campaign->toggle_group ? 'group' : 'recipient'),
                                     $item->id
                                 ])) !!}
-                                <x-secondary-button type="button" wire:click="addRecipientToCard('{{ $item->id }}')" class="justify-center mt-3">{{ __('Claim') }}</x-secondary-button>
-                            </span>
+                                <x-secondary-button type="submit" class="justify-center mt-3">{{ __('Claim') }}</x-secondary-button>
+                            </form>
                         </div>
                     </div>
                 @endforeach
