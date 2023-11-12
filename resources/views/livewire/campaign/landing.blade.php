@@ -23,7 +23,13 @@
                         <div class="flex flex-row bg-white border border-slate-200 rounded-lg px-3 py-1">
                             @if($campaign->toggle_group)
                                 <div class="flex flex-col">
-                                    <h3 class="text-lg font-light">{{ $item->name }}</h3>
+                                    <h3 class="text-lg font-light">
+                                        @if($campaign->toggle_privacy)
+                                            {{ __('Group :id',['id' => $item->external_id]) }}
+                                        @else
+                                            {{ $item->name }}
+                                        @endif
+                                    </h3>
                                     <small class="text-xs text-slate-400 uppercase tracking-widest mt-3">{{ __('Recipients in Group') }}</small>
                                     <div class="divide-y mt-1">
                                         @foreach($item->recipients as $recipient)
@@ -40,7 +46,13 @@
                                 </div>
                             @else
                                 <div class="flex flex-col w-full">
-                                    <h3 class="text-lg font-light">{{ $item->name }}</h3>
+                                    <h3 class="text-lg font-light">
+                                        @if($campaign->toggle_privacy)
+                                            {{ __('Recipient :id',['id' => $item->external_id]) }}
+                                        @else
+                                            {{ $item->name }}
+                                        @endif
+                                    </h3>
                                     <div class="divide-y mt-1">
                                         @foreach($item->getMeta() as $key => $value)
                                             <div class="mr-3 text-sm">
@@ -53,10 +65,12 @@
 
                             <form class="flex flex-col w-28 mx-auto my-3" method="POST" action="{{ route('recipient.hold', ['campaign' => $campaign, 'ulid' => $item->id]) }}">
                                 @csrf
-                                {!! QrCode::size(100)->generate(route('recipient.claim', [
-                                    ($campaign->toggle_group ? 'group' : 'recipient'),
-                                    $item->id
-                                ])) !!}
+                                @if($item->toggle_scanner)
+                                    {!! QrCode::size(100)->generate(route('recipient.claim', [
+                                        ($campaign->toggle_group ? 'group' : 'recipient'),
+                                        $item->id
+                                    ])) !!}
+                                @endif
                                 <x-secondary-button type="submit" class="justify-center mt-3">{{ __('Claim') }}</x-secondary-button>
                             </form>
                         </div>
