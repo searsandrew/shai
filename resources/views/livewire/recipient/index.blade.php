@@ -5,7 +5,6 @@
         </h2>
     </x-slot>
 
-    Group: {{ $group->id }}
     <div class="flex flex-col-reverse sm:flex-row max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="w-full sm:w-2/3">
             <table class="table border-collapse table-fixed w-full text-sm mb-3">
