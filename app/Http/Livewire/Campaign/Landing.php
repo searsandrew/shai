@@ -17,6 +17,10 @@ class Landing extends Component
     public Donor $donor;
     public int $count;
 
+    public $listeners = [
+        'remove-donor' => 'getCollection',
+    ];
+
     public function mount()
     {
         $this->donor = Donor::where('public_key', Cookie::get('shai_public_key'))->first();

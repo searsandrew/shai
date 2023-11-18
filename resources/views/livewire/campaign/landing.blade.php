@@ -23,18 +23,18 @@
                         <div class="flex flex-row bg-white border border-slate-200 rounded-lg px-3 py-1">
                             @if($campaign->toggle_group)
                                 <div class="flex flex-col">
-                                    <h3 class="text-lg font-light">
+                                    <h3 class="text-lg font-light mt-1">
                                         @if($campaign->toggle_privacy)
                                             {{ __('Group :id',['id' => $item->external_id]) }}
                                         @else
                                             {{ $item->name }}
                                         @endif
                                     </h3>
-                                    <small class="text-xs text-slate-400 uppercase tracking-widest mt-3">{{ __('Recipients in Group') }}</small>
+                                    <small class="text-xs text-slate-400 uppercase tracking-widest">{{ __('Recipients in Group') }}</small>
                                     <div class="divide-y mt-1">
                                         @foreach($item->recipients as $recipient)
                                             <div class="flex flex-wrap py-3 first:pt-0">
-                                                <h4 class="w-full">{{ $recipient->name }}</h4>
+                                                <h4 class="w-full font-semibold">{{ $recipient->name }}</h4>
                                                 @foreach($recipient->getMeta() as $key => $value)
                                                     <div class="mr-3 text-sm">
                                                         <span class="font-bold">{{ Str::headline($key) }}</span>: {{ Str::headline($value) }}

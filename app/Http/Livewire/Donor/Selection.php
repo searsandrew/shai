@@ -25,9 +25,10 @@ class Selection extends Component
             {
                 $recipient->donors()->detach($this->donor);
             }
-            $group->update(['held_at', '']);
+            $group->held_at = NULL;
+            $group->save();
 
-            dd('done');
+            return $this->redirect(route('campaign.landing', $this->campaign));
         } else {
             dd('not grouped');
 
