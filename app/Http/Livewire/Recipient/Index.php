@@ -26,6 +26,9 @@ class Index extends Component
     public string $claimCode = '', $name = '', $email = '', $emailType = 'selection';
 
     protected $rules = [];
+//    protected $queryString = [
+//        'recipient', 'group'
+//    ];
 
     public function mount()
     {
@@ -150,7 +153,7 @@ class Index extends Component
         }
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.recipient.index', [
             'list' => $this->toggleGroups ? $this->campaign->groups()->paginate(25) : $this->campaign->recipients()->paginate(25)

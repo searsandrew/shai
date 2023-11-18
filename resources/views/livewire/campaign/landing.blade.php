@@ -6,7 +6,7 @@
             <form method="POST" action="{{ route('donor.claim', $donor) }}" class="flex flex-row content-center">
                 @csrf
                 @if($count > 0)
-                    <span class="content-center mr-3">{{ __(':count Recipients Selected', ['count' => $count]) }}</span>
+                    @livewire('donor.selection', ['count' => $count, 'donor' => $donor, 'campaign' => $campaign])
                     <x-primary-button type="submit">{{ __('Claim and Logout') }}</x-primary-button>
                 @else
                     <x-primary-button type="submit">{{ __('Logout') }}</x-primary-button>

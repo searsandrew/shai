@@ -36,4 +36,9 @@ class Donor extends Model
     {
         return $this->belongsToMany(Recipient::class)->withPivot('status')->withTimestamps();
     }
+
+    public function groups(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Recipient::class, Group::class);
+    }
 }
