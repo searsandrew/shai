@@ -4,18 +4,17 @@ namespace App\Http\Livewire\Organization;
 
 use App\Mail\SendInviteCode;
 use App\Models\Address;
-use App\Models\Invite;
 use App\Models\Organization;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
-
-use Auth;
 
 class Manage extends Component
 {
     public Address $address;
     public Organization $organization;
-    public string $invite;
+    public bool $inviteSuccess = false;
+    public string $invite = '';
 
     public $rules = [
         'organization.name' => 'required',
@@ -27,8 +26,12 @@ class Manage extends Component
         'address.zip' => 'required',
     ];
 
-    public function sendInviteCode()
+    public function sendInviteCode(): void
     {
+        $this->validate([
+            'invite' => ['required', 'email:rfc,dns'],
+        ]);
+
         $sendInvite = Auth::user()->invites()->create([
             'organization_id' => $this->organization->id,
             'email' => $this->invite,
@@ -36,10 +39,11 @@ class Manage extends Component
 
         Mail::to($sendInvite->email)->send(new SendInviteCode($sendInvite));
 
-        $invite = '';
+        $this->reset('invite');
+        $this->inviteSuccess = true;
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.organization.manage');
     }

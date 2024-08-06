@@ -46,7 +46,7 @@ class Setup extends Component
         $this->invite = '';
         $this->inviteNotFound = true;
 
-        return redirect(route('dashboard'));
+        return redirect(route('campaign.index'));
     }
 
     public function createOrganization()
@@ -64,7 +64,7 @@ class Setup extends Component
             Auth::user()->organizations()->attach($this->organization->id);
             Auth::user()->organization = $this->organization->id;
             Auth::user()->save();
-            return redirect(route('dashboard'));
+            return redirect(route('campaign.index'));
         }
 
         $this->emit('error');
