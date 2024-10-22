@@ -41,18 +41,18 @@
 
                 <div class="mt-6">
                     <x-input-label for="name" :value="__('Campaign Name')" />
-                    <x-text-input id="name" type="text" class="mt-1 block w-full" wire:model="campaign.name" />
+                    <x-text-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="campaign.name" />
                     <x-input-error :messages="$errors->get('campaign.name')" class="mt-2" />
                 </div>
                 <div class="mt-3 flex flex-col sm:flex-row">
                     <div class="input-group sm:mr-1 w-full">
                         <x-input-label for="started_at" :value="__('Starting Date')" />
-                        <x-text-input id="started_at" type="text" class="mt-1 block w-full" wire:model="campaign.started_at" />
+                        <x-text-input id="started_at" type="date" class="mt-1 block w-full" wire:model.defer="campaign.started_at" />
                         <x-input-error :messages="$errors->get('campaign.started_at')" class="mt-2" />
                     </div>
                     <div class="input-group sm:ml-1 w-full">
                         <x-input-label for="ended_at" :value="__('Ending Date')" />
-                        <x-text-input id="ended_at" type="text" class="mt-1 block w-full" wire:model="campaign.ended_at" />
+                        <x-text-input id="ended_at" type="date" class="mt-1 block w-full" wire:model.defer="campaign.ended_at" />
                         <x-input-error :messages="$errors->get('campaign.ended_at')" class="mt-2" />
                     </div>
                 </div>

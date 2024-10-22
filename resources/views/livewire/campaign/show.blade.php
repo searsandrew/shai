@@ -38,6 +38,8 @@
                     <span class="px-3">
                         @livewire('recipient.upload', ['campaign' => $campaign])
                     </span>
+
+                    <livewire:recipient.create :campaign="$campaign" />
                 </div>
             </div>
             <div class="w-full sm:w-1/3 sm:mx-2">

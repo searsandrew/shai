@@ -24,7 +24,11 @@ class Claim
         $collection = $donor->recipients()->where('status', 'holding')->get();
 
         $mail = Mail::to($donor->email)->send(new SendDonorEmail($collection, 'selection'));
-        
+        $recipients->first()->communications()->create([
+            'type' => 'selection',
+            'payload' => json_encode($mail)
+        ]);
+
         foreach($collection as $recipient)
         {
             $recipient->donors()->updateExistingPivot($donor->id, [
